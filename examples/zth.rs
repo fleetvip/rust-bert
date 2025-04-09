@@ -14,11 +14,45 @@ extern crate anyhow;
 
 use std::time::Instant;
 
-use rust_bert::pipelines::zero_shot_classification::ZeroShotClassificationModel;
+use rust_bert::{
+    pipelines::{
+        common::ModelResource,
+        sequence_classification,
+        zero_shot_classification::{ZeroShotClassificationConfig, ZeroShotClassificationModel},
+    },
+    resources::{RemoteResource, ResourceProvider},
+};
 
 fn main() -> anyhow::Result<()> {
+    // 1. Define Thai-specific resources
+    let config_resource = RemoteResource::new(
+        "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/config.json",
+        "bert-base-th-config",
+    );
+    let vocab_resource = RemoteResource::new(
+        "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/vocab.txt",
+        "bert-base-th-vocab",
+    );
+
+    let model_resource = ModelResource::Torch(Box::new(RemoteResource::new(
+        "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/rust_model.ot",
+        "model",
+    )));
+    // ModelResource::Torch( /)
+    let config = ZeroShotClassificationConfig::new(
+        rust_bert::pipelines::common::ModelType::Bert,
+        model_resource,
+        config_resource,
+        vocab_resource,
+        None,
+        false,
+        false,
+        false,
+    );
+
     //    Set-up model
     let sequence_classification_model = ZeroShotClassificationModel::new(Default::default())?;
+    let model = ZeroShotClassificationModel::new(config)?;
 
     let input_sentence = "Who are you voting for in 2020?";
     let input_sequence_2 = "The prime minister has announced a stimulus package which was widely criticized by the opposition.";
