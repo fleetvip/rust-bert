@@ -47,7 +47,7 @@ fn main() -> anyhow::Result<()> {
         None,
         false,
         false,
-        false,
+        true,
     );
 
     //    Set-up model
