@@ -27,16 +27,16 @@ fn main() -> anyhow::Result<()> {
     // 1. Define Thai-specific resources
     let config_resource = RemoteResource::new(
         "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/config.json",
-        "bert-base-th-config",
+        ".config",
     );
     let vocab_resource = RemoteResource::new(
         "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/vocab.txt",
-        "bert-base-th-vocab",
+        ".vocab",
     );
 
     let model_resource = ModelResource::Torch(Box::new(RemoteResource::from_pretrained((
         "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/rust_model.ot",
-        "model",
+        ".model",
     ))));
     // ModelResource::Torch( /)
     let config = ZeroShotClassificationConfig::new(
