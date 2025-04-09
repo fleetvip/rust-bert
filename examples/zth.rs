@@ -34,10 +34,10 @@ fn main() -> anyhow::Result<()> {
         "bert-base-th-vocab",
     );
 
-    let model_resource = ModelResource::Torch(Box::new(RemoteResource::new(
+    let model_resource = ModelResource::Torch(Box::new(RemoteResource::from_pretrained((
         "https://huggingface.co/c1ownraid/bert-base-thai-upos-rust/resolve/main/rust_model.ot",
         "model",
-    )));
+    ))));
     // ModelResource::Torch( /)
     let config = ZeroShotClassificationConfig::new(
         rust_bert::pipelines::common::ModelType::Bert,
