@@ -40,7 +40,7 @@ fn main() -> anyhow::Result<()> {
     )));
     // ModelResource::Torch( /)
     let config = ZeroShotClassificationConfig::new(
-        rust_bert::pipelines::common::ModelType::Bert,
+        rust_bert::pipelines::common::ModelType::DistilBert,
         model_resource,
         config_resource,
         vocab_resource,
